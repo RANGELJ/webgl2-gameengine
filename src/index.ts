@@ -1,7 +1,6 @@
 import webgl2CanvasSetSize from './shared/webgl2CanvasSetSize'
 import webgl2Clear from './shared/webgl2Clear'
-import webgl2CreateProgram from './shared/webgl2CreateProgram'
-import webgl2CreateShader from './shared/webgl2CreateShader'
+import webgl2CreateProgramWithShaders from './shared/webgl2CreateProgramWithShaders'
 
 const vertexShaderSource = `
 #version 300 es
@@ -53,19 +52,11 @@ const component = () => {
     // 2: Compile text and validate
     // 3: Link the shaders together as a program
     // 4: Get location of uniforms and attributes
-    const program = webgl2CreateProgram({
+    const program = webgl2CreateProgramWithShaders({
         gl,
         doValidate: true,
-        vertexShader: webgl2CreateShader({
-            gl,
-            src: vertexShaderSource,
-            type: 'vertex',
-        }),
-        fragmentShader: webgl2CreateShader({
-            gl,
-            src: fragmentShaderSource,
-            type: 'fragment',
-        }),
+        vertexShaderSource,
+        fragmentShaderSource,
     })
 
     gl.useProgram(program)
