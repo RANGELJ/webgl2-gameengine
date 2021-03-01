@@ -24,7 +24,7 @@ precision mediump float;
 out vec4 finalColor;
 
 void main() {
-    finalColor = vec4(0.0, 0.0, 0.0, 1.0);
+    finalColor = vec4(0.5, 0.0, 0.0, 1.0);
 }
 `.trim()
 
@@ -73,7 +73,11 @@ const component = () => {
     const uPointSieLoc = gl.getUniformLocation(program, 'uPointSize')
     gl.useProgram(null)
 
-    const aryVerts = new Float32Array([0, 0, 0])
+    const aryVerts = new Float32Array([
+        0, 0, 0,
+        0.5,0.5,0,
+        -0.5,-0.5,0,
+    ])
     const bufVerts = gl.createBuffer()
 
     gl.bindBuffer(gl.ARRAY_BUFFER, bufVerts)
@@ -88,7 +92,7 @@ const component = () => {
     gl.vertexAttribPointer(aPositionLoc, 3, gl.FLOAT, false, 0, 0)
     gl.bindBuffer(gl.ARRAY_BUFFER, null)
 
-    gl.drawArrays(gl.POINTS, 0, 1)
+    gl.drawArrays(gl.POINTS, 0, aryVerts.length / 3)
 
     return canvas
 }
