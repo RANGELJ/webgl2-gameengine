@@ -1,5 +1,6 @@
 import webgl2CanvasSetSize from './shared/webgl2CanvasSetSize'
 import webgl2Clear from './shared/webgl2Clear'
+import webgl2CreateArrayBuffer from './shared/webgl2CreateArrayBuffer'
 import webgl2CreateProgramWithShaders from './shared/webgl2CreateProgramWithShaders'
 
 const vertexShaderSource = `
@@ -47,11 +48,6 @@ const component = () => {
 
     webgl2Clear(gl)
 
-    // SHADER STEPS
-    // 1: Get Vertex and Fragment shader text
-    // 2: Compile text and validate
-    // 3: Link the shaders together as a program
-    // 4: Get location of uniforms and attributes
     const program = webgl2CreateProgramWithShaders({
         gl,
         doValidate: true,
@@ -69,16 +65,13 @@ const component = () => {
         0.5,0.5,0,
         -0.5,-0.5,0,
     ])
-    const bufVerts = gl.createBuffer()
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, bufVerts)
-    gl.bufferData(gl.ARRAY_BUFFER, aryVerts, gl.STATIC_DRAW)
-    gl.bindBuffer(gl.ARRAY_BUFFER, null)
+    const vertsBuff = webgl2CreateArrayBuffer({ gl, floatArray: aryVerts, isStatic: true })
 
     gl.useProgram(program)
-    gl.uniform1f(uPointSieLoc, 50.0)
+    gl.uniform1f(uPointSieLoc, 20.0)
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, bufVerts)
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertsBuff)
     gl.enableVertexAttribArray(aPositionLoc)
     gl.vertexAttribPointer(aPositionLoc, 3, gl.FLOAT, false, 0, 0)
     gl.bindBuffer(gl.ARRAY_BUFFER, null)
