@@ -35,8 +35,8 @@ in float size;
 out vec4 finalColor;
 
 void main() {
-    float c = (40.0 - size) / 20.0;
-    finalColor = vec4(c, c, c, 1.0);
+    float c = (5.0 - size) / 2.0;
+    finalColor = vec4(0.0, c, c, 1.0);
 }
 `.trim()
 
@@ -95,7 +95,7 @@ const component = () => {
         fps: 60,
         callback: (deltaTime) => {
             gPointSize += gPSizeStep - deltaTime
-            const size = (Math.sin(gPointSize) * 10.0) + 30.0
+            const size = (Math.sin(gPointSize) * 2.0) + 5.0
             gl.uniform1f(uPointSieLoc, size)
 
             gAngle += gAngleStep * deltaTime
