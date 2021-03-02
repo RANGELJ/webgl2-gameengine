@@ -9,11 +9,15 @@ const vertexShaderSource = `
 
 in vec3 a_position;
 
-uniform float uPointSize;
+uniform mediump float uPointSize;
 uniform float uAngle;
+
+out float size;
 
 void main() {
     gl_PointSize = uPointSize;
+    size = uPointSize;
+
     gl_Position = vec4(
         cos(uAngle) * 0.1 + a_position.x,
         sin(uAngle) * 0.3 + a_position.y,
@@ -25,13 +29,14 @@ void main() {
 
 const fragmentShaderSource = `
 #version 300 es
-
 precision mediump float;
 
+in float size;
 out vec4 finalColor;
 
 void main() {
-    finalColor = vec4(0.5, 0.0, 0.0, 1.0);
+    float c = (40.0 - size) / 20.0;
+    finalColor = vec4(c, c, c, 1.0);
 }
 `.trim()
 
@@ -87,6 +92,7 @@ const component = () => {
     const gAngleStep = (Math.PI / 100.0) * 90 // 90 Degs in radians
 
     const renderLoop = createRenderLoopFunction({
+        fps: 60,
         callback: (deltaTime) => {
             gPointSize += gPSizeStep - deltaTime
             const size = (Math.sin(gPointSize) * 10.0) + 30.0
